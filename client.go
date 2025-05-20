@@ -8,6 +8,7 @@ import (
 type Client struct {
 	MerchantID string // merchantId
 	AccessKey  string // accessKey
+	BackKey    string //backKey
 
 	CurDepositUrl  string
 	CurWithdrawUrl string
@@ -19,10 +20,11 @@ type Client struct {
 	logger   utils.Logger
 }
 
-func NewClient(logger utils.Logger, merchantID string, accessKey, curDepositUrl, curWithdrawUrl, cryDepositUrl, cryWithdrawUrl string) *Client {
+func NewClient(logger utils.Logger, merchantID string, accessKey, backKey, curDepositUrl, curWithdrawUrl, cryDepositUrl, cryWithdrawUrl string) *Client {
 	return &Client{
 		MerchantID:     merchantID,
 		AccessKey:      accessKey,
+		BackKey:        backKey,
 		CurDepositUrl:  curDepositUrl,
 		CurWithdrawUrl: curWithdrawUrl,
 		CryDepositUrl:  cryDepositUrl,
