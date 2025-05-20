@@ -1,13 +1,13 @@
 package go_elk
 
 const (
-	LIVE_URL    = "https://gw.praxisgate.com/cashier/cashier"
-	SANDBOX_URL = "https://pci-gw-test.praxispay.com/cashier/cashier"
-
 	//参数
-	MERCHANT_ID     = "hiahaihaihaihaihaiahiahihaih"
-	MERCHANT_KEY    = "hiahaihaihaihaihaiahiahihaih"
-	APPLICATION_KEY = "AAA"
-	API_VERSION     = "1.3"
-	API_LOCALE      = "en-GB"
+	MERCHANT_ID = "hiahaihaihaihaihaiahiahihaih"
+	ACCESS_KEY  = "hiahaihaihaihaihaiahiahihaih"
+
+	CUR_DEPOSIT_URL  = "https://127.0.0.1/a"
+	CUR_WITHDRAW_URL = "https://127.0.0.1/a"
+
+	CRY_DEPOSIT_URL  = "https://127.0.0.1/a"
+	CRY_WITHDRAW_URL = "https://127.0.0.1/a"
 )

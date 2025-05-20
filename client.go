@@ -6,26 +6,27 @@ import (
 )
 
 type Client struct {
-	MerchantID     string // merchantId
-	MerchantKey    string // accessKey
-	ApplicationKey string // merchantSecret
-	ApiVersion     string
-	ApiLocale      string
+	MerchantID string // merchantId
+	AccessKey  string // accessKey
 
-	BaseURL string
+	CurDepositUrl  string
+	CurWithdrawUrl string
+
+	CryDepositUrl  string
+	CryWithdrawUrl string
 
 	ryClient *resty.Client
 	logger   utils.Logger
 }
 
-func NewClient(logger utils.Logger, merchantID string, merchantKey, applicationKey, apiVersion, apiLocale string, baseURL string) *Client {
+func NewClient(logger utils.Logger, merchantID string, accessKey, curDepositUrl, curWithdrawUrl, cryDepositUrl, cryWithdrawUrl string) *Client {
 	return &Client{
 		MerchantID:     merchantID,
-		MerchantKey:    merchantKey,
-		ApplicationKey: applicationKey,
-		ApiVersion:     apiVersion,
-		ApiLocale:      apiLocale,
-		BaseURL:        baseURL,
+		AccessKey:      accessKey,
+		CurDepositUrl:  curDepositUrl,
+		CurWithdrawUrl: curWithdrawUrl,
+		CryDepositUrl:  cryDepositUrl,
+		CryWithdrawUrl: cryWithdrawUrl,
 
 		ryClient: resty.New(), //client实例
 		logger:   logger,
