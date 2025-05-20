@@ -39,3 +39,23 @@ func Sign(params map[string]interface{}, key string) (string, error) {
 
 	return signResult, nil
 }
+
+func Verify(params map[string]interface{}, signKey string) (bool, error) {
+	// Check if signature exists in params
+	signature, exists := params["signature"]
+	if !exists {
+		return false, nil
+	}
+
+	// Remove signature from params for verification
+	delete(params, "signature")
+
+	// Generate current signature
+	currentSignature, err := Sign(params, signKey)
+	if err != nil {
+		return false, fmt.Errorf("signature generation failed: %w", err)
+	}
+
+	// Compare signatures
+	return signature.(string) == currentSignature, nil
+}
