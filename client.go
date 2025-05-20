@@ -32,3 +32,7 @@ func NewClient(logger utils.Logger, merchantID string, accessKey, curDepositUrl,
 		logger:   logger,
 	}
 }
+
+func (cli *Client) SetMerchantId(merchantId string) {
+	cli.MerchantID = merchantId
+}
