@@ -2,6 +2,7 @@ package go_elk
 
 import (
 	"fmt"
+	"github.com/google/uuid"
 	"testing"
 )
 
@@ -21,10 +22,10 @@ func TestCryDeposit(t *testing.T) {
 
 func GenCryDepositRequestDemo() ELKCryDepositReq {
 	return ELKCryDepositReq{
-		UniqueCode: "hiahaihia",
+		UniqueCode: uuid.New().String(),
 		Protocol:   "TRC20",
 		CoinName:   "USDT",
 		Amount:     "600.00",
-		OrderId:    "123",
+		OrderId:    "1234",
 	}
 }
