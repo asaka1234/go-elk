@@ -14,6 +14,7 @@ func (cli *Client) CurDeposit(req ELKCurDepositReq) (*ELKCurDepositRsp, error) {
 
 	var params map[string]interface{}
 	mapstructure.Decode(req, &params)
+	params["uid"] = cli.MerchantID
 
 	// Log request
 	cli.logger.Infof("ELKCurService#req: %+v", req)

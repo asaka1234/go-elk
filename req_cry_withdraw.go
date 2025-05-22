@@ -13,6 +13,7 @@ func (cli *Client) CryWithdraw(req ELKCryWithdrawReq) (*ELKCryWithdrawRsp, error
 	// 2. Convert struct to map for signing
 	var params map[string]interface{}
 	mapstructure.Decode(req, &params)
+	params["uid"] = cli.MerchantID //uid要参与签名
 
 	// 3. Generate signature
 	signStr, _ := utils.Sign(params, cli.AccessKey)

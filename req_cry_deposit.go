@@ -13,6 +13,7 @@ func (cli *Client) CryDeposit(req ELKCryDepositReq) (*ELKCryDepositRsp, error) {
 
 	var params map[string]interface{}
 	mapstructure.Decode(req, &params)
+	params["uid"] = cli.MerchantID //uid要参与签名
 
 	// Generate signature
 	signStr, _ := utils.Sign(params, cli.AccessKey)
