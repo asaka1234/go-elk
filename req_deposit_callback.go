@@ -3,29 +3,16 @@ package go_elk
 import (
 	"encoding/json"
 	"github.com/asaka1234/go-elk/utils"
+	"github.com/mitchellh/mapstructure"
 	"log"
 )
 
-func (cli *Client) CryDepositCallback(req ELKCryDepositBackReq, processor func(ELKCryDepositBackReq) error) error {
+// crypto的充值回调
+func (cli *Client) CryDepositCallback(req ELKCryDepositBackReq, sign string, processor func(ELKCryDepositBackReq) error) error {
 	//验证签名
-	//TODO
-
-	//开始处理
-	return processor(req)
-}
-
-func (cli *Client) CurDepositCallback(req ELKCurDepositBackReq, processor func(ELKCurDepositBackReq) error) error {
-	//验证签名
-	params := make(map[string]interface{})
-	jsonData, err := json.Marshal(req)
-	if err != nil {
-		log.Printf("JSON marshal error: %v", err)
-		return err
-	}
-	if err := json.Unmarshal(jsonData, &params); err != nil {
-		log.Printf("JSON unmarshal error: %v", err)
-		return err
-	}
+	var params map[string]interface{}
+	mapstructure.Decode(req, &params)
+	params["signature"] = sign //保存一下从header传过来的原始签名sign
 
 	// Verify signature
 	flag, err := utils.Verify(params, cli.BackKey)
@@ -34,10 +21,32 @@ func (cli *Client) CurDepositCallback(req ELKCurDepositBackReq, processor func(E
 		return err
 	}
 	if !flag {
+		//签名校验失败
+		reqJson, _ := json.Marshal(req)
+		log.Printf("ELKCrypto back verify fail, req: %s", string(reqJson))
+	}
+
+	//开始处理
+	return processor(req)
+}
+
+func (cli *Client) CurDepositCallback(req ELKCurDepositBackReq, processor func(ELKCurDepositBackReq) error) error {
+	//验证签名
+	var params map[string]interface{}
+	mapstructure.Decode(req, &params)
+
+	// Verify signature
+	flag, err := utils.Verify(params, cli.BackKey)
+	if err != nil {
+		log.Printf("Signature verification error: %v", err)
+		return err
+	}
+	if !flag {
+		//签名校验失败
 		reqJson, _ := json.Marshal(req)
 		log.Printf("ELKCur back verify fail, req: %s", string(reqJson))
 	}
-	
+
 	//开始处理
 	return processor(req)
 }

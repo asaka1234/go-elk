@@ -1,14 +1,15 @@
 package go_elk
 
 type ELKCurDepositReq struct {
-	UID        int    `json:"uid"`
-	UniqueCode string `json:"uniqueCode"`
-	Money      string `json:"money"`
-	PayType    int    `json:"payType"` // 1: UniPay 2: Alipay 3: WeChat
-	OrderId    string `json:"orderId"`
-	Signature  string `json:"signature"`
-	PayerName  string `json:"payerName"`
-	JumpUrl    string `json:"jumpUrl"`
+	UID        int    `json:"uid" mapstructure:"uid"`
+	UniqueCode string `json:"uniqueCode" mapstructure:"uniqueCode"`
+	Money      string `json:"money" mapstructure:"money"`
+	PayType    int    `json:"payType" mapstructure:"payType"` // 1: UniPay 2: Alipay 3: WeChat
+	OrderId    string `json:"orderId" mapstructure:"orderId"`
+	PayerName  string `json:"payerName" mapstructure:"payerName"`
+	JumpUrl    string `json:"jumpUrl" mapstructure:"jumpUrl"`
+	//这个不需要业务侧使用,而是sdk帮计算和补充
+	//Signature  string `json:"signature" mapstructure:"signature"` //参数里
 }
 
 type ELKCurDepositRsp struct {
@@ -19,52 +20,17 @@ type ELKCurDepositRsp struct {
 }
 
 type ELKCurWithdrawReq struct {
-	UID       int    `json:"uid"`
-	Money     string `json:"money"`
-	OrderId   string `json:"orderId"`
-	Signature string `json:"signature"`
-	PayerName string `json:"payerName"`
-	CardNo    string `json:"cardNo"`
-	BankName  string `json:"bankName"`
+	UID       int    `json:"uid" mapstructure:"uid"`
+	Money     string `json:"money" mapstructure:"money"`
+	OrderId   string `json:"orderId" mapstructure:"orderId"`
+	PayerName string `json:"payerName" mapstructure:"payerName"`
+	CardNo    string `json:"cardNo" mapstructure:"cardNo"`
+	BankName  string `json:"bankName" mapstructure:"bankName"`
+	//这个不需要业务侧使用,而是sdk帮计算和补充
+	//Signature string `json:"signature" mapstructure:"signature"` //参数里
 }
 
 type ELKCurWithdrawRsp struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
-	Data    string `json:"data"`
-	Success bool   `json:"success"`
-}
-
-//--------------------------------------------------
-
-type ELKCryDepositReq struct {
-	UID        int    `json:"uid"`
-	UniqueCode string `json:"uniqueCode"`
-	Protocol   string `json:"protocol"`
-	CoinName   string `json:"coinName"`
-	OrderId    string `json:"orderId"`
-	Amount     string `json:"amount"`
-	Signature  string `json:"signature"`
-}
-
-type ELKCryDepositRsp struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
-	Data    string `json:"data"`
-	Success bool   `json:"success"`
-}
-
-type ELKCryWithdrawReq struct {
-	UID       int    `json:"uid"`
-	ChainName string `json:"chainName"`
-	CoinName  string `json:"coinName"`
-	OrderId   string `json:"orderId"`
-	Amount    string `json:"amount"`
-	ToAddress string `json:"toAddress"`
-	Signature string `json:"signature"`
-}
-
-type ELKCryWithdrawRsp struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
 	Data    string `json:"data"`
@@ -80,7 +46,7 @@ type ELKCurDepositBackReq struct {
 	TradeId           string `json:"tradeId"`
 	WithdrawalOrderNo string `json:"withdrawalOrderNo"`
 	UniqueCode        string `json:"uniqueCode"`
-	Signature         string `json:"signature"`
+	Signature         string `json:"signature"` //参数里(是psp传过来的)
 }
 
 type ELKCurDepositBackRsp struct {
@@ -90,21 +56,66 @@ type ELKCurDepositBackRsp struct {
 	Success bool   `json:"success"`
 }
 
-//--------------------------------------------------
+//================================================
 
-type ELKCryDepositBackReq struct {
-	ApiOrderNo  string `json:"apiOrderNo"`
-	TradeId     string `json:"tradeId"`
-	TxId        string `json:"txId"`
-	UniqueCode  string `json:"uniqueCode"`
-	Protocol    string `json:"protocol"`
-	CoinName    string `json:"coinName"`
-	Amount      string `json:"amount"`
-	OrderAmount string `json:"orderAmount"`
-	Fee         string `json:"fee"`
+type ELKCryDepositReq struct {
+	UID        int    `json:"uid" mapstructure:"uid"`               //Merchant UID, corresponding to the "UID" in the merchant's back office
+	UniqueCode string `json:"uniqueCode" mapstructure:"uniqueCode"` //A merchant's representative unique identifier, such as a user ID or business ID.
+	Protocol   string `json:"protocol" mapstructure:"protocol"`     //代币协议 TRC20
+	CoinName   string `json:"coinName" mapstructure:"coinName"`     //哪种币 USDT
+	OrderId    string `json:"orderId" mapstructure:"orderId"`       //payorder的id
+	Amount     string `json:"amount" mapstructure:"amount"`
+	//这个不需要业务侧使用,而是sdk帮计算和补充
+	//Signature string `json:"signature" mapstructure:"signature"` //签名字段
 }
 
-type ELKCryDepositBackRsp struct {
+/*
+{
+	" signature ": "27a75e39ac8263612c6da1807edd1999",
+	"amount": "5",
+	"coinName": "USDT",
+	"orderId": "fff22222200000121",
+	"protocol": "ERC20",
+	"uid": "5553088",
+	"uniqueCode": "193903"
+}
+
+*/
+
+type ELKCryDepositRsp struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+	Data    string `json:"data"` //Interface returns the result. The value is a URL address, and accessing this URL will redirect you to the order placement page.
+	Success bool   `json:"success"`
+}
+
+type ELKCryWithdrawReq struct {
+	UID       int    `json:"uid" mapstructure:"uid"`             //Merchant UID. Corresponding to the "Merchant Code" in the merchant backend.
+	ChainName string `json:"chainName" mapstructure:"chainName"` //TRC20
+	CoinName  string `json:"coinName" mapstructure:"coinName"`   //USDT
+	OrderId   string `json:"orderId" mapstructure:"orderId"`     //Merchant Order Number. A unique identifier generated by the merchant platform.
+	Amount    string `json:"amount" mapstructure:"amount"`
+	ToAddress string `json:"toAddress" mapstructure:"toAddress"`
+	//这个不需要业务侧使用,而是sdk帮计算和补充
+	//Signature string `json:"signature" mapstructure:"signature"` //参数里
+}
+
+/*
+{
+
+	"amount": "10",
+	"coinName": "USDT",
+	"orderId": "fff2222220000012",
+	"coinChain": "ERC20",
+	"uid": "3659931",
+	"toAddress": "fx002",
+
+"signature": "VMAXj2jPLMbINU412Y5ORTy6OKEgWFq0"
+
+}
+*/
+
+type ELKCryWithdrawRsp struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
 	Data    string `json:"data"`
@@ -113,17 +124,69 @@ type ELKCryDepositBackRsp struct {
 
 //--------------------------------------------------
 
-type ELKCryWithdrawBackReq struct {
-	Amount      string `json:"amount"`
-	Fee         string `json:"fee"`
-	CoinName    string `json:"coinName"`
-	TradeId     string `json:"tradeId"`
-	ApiOrderNo  string `json:"apiOrderNo"`
-	TradeStatus int    `json:"tradeStatus"`
-	TxId        string `json:"txId"`
-	ToAddress   string `json:"toAddress"`
-	Signature   string `json:"signature"`
+// POST
+// 签名放在head:signature 中
+type ELKCryDepositBackReq struct {
+	ApiOrderNo  string `json:"apiOrderNo" mapstructure:"apiOrderNo"` //Merchant Order Number: Refers to the orderId
+	TradeId     string `json:"tradeId" mapstructure:"tradeId"`       //Platform Record ID
+	TxId        string `json:"txId" mapstructure:"txId"`
+	UniqueCode  string `json:"uniqueCode" mapstructure:"uniqueCode"` //Merchant's representative unique identifier, for example, User ID or Business ID.
+	Protocol    string `json:"protocol" mapstructure:"protocol"`
+	CoinName    string `json:"coinName" mapstructure:"coinName"` //Curency type, for exmaple：USDT
+	Amount      string `json:"amount" mapstructure:"amount"`
+	OrderAmount string `json:"orderAmount" mapstructure:"orderAmount"`
+	Fee         string `json:"fee" mapstructure:"fee"`
 }
+
+/*
+{
+	"apiOrderNo": "fff2222220000900",
+	"amount": "0.9000",
+	"protocol": "ERC20",
+	"orderAmount": "2.3309",
+	"uniqueCode": "3659931",
+	"fee": "0.2000",
+	"txId": "0x00355ba3f4a839668159abee67974a0dfb8c129fef370c105c5359ce9a25611d",
+	"coinName": "USDT",
+	"tradeId": 606287024574013440
+}
+
+*/
+
+type ELKCryDepositBackRsp struct {
+	Code    int    `json:"code"` //1: success, other values: failure
+	Message string `json:"message"`
+	Data    string `json:"data"`
+	Success bool   `json:"success"`
+}
+
+//--------------------------------------------------
+
+type ELKCryWithdrawBackReq struct {
+	Amount      string `json:"amount" mapstructure:"amount"`
+	Fee         string `json:"fee" mapstructure:"fee"`
+	CoinName    string `json:"coinName" mapstructure:"coinName"`
+	TradeId     string `json:"tradeId" mapstructure:"tradeId"`         //crypto payout order ID
+	ApiOrderNo  string `json:"apiOrderNo" mapstructure:"apiOrderNo"`   //Merchant Order Number. A unique identifier generated by the merchant platform.
+	TradeStatus int    `json:"tradeStatus" mapstructure:"tradeStatus"` //1-success   2-failed
+	TxId        string `json:"txId" mapstructure:"txId"`
+	ToAddress   string `json:"toAddress" mapstructure:"toAddress"`
+	Signature   string `json:"signature" mapstructure:"signature"` //是psp传回来的
+}
+
+/*
+{
+	 "amount": "10",
+	"fee": "1.0",
+	 "coinName": "USDT",
+	 "orderId": "fff2222220000012",
+	 "withdrawId": "xxxxxxxxxxxxxxxxxxxx",
+	 "tradeStatus": 1,
+	 "toAddress": " xxxxxxxxxxxxxxxxxxxxxx",
+	"txid": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+}
+
+*/
 
 type ELKCryWithdrawBackRsp struct {
 	Code    int    `json:"code"`

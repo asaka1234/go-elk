@@ -3,23 +3,14 @@ package go_elk
 import (
 	"encoding/json"
 	"github.com/asaka1234/go-elk/utils"
+	"github.com/mitchellh/mapstructure"
 	"log"
 )
 
-// 充值/提现的回调处理(传入一个处理函数)
 func (cli *Client) CryWithdrawCallback(req ELKCryWithdrawBackReq, processor func(ELKCryWithdrawBackReq) error) error {
 	//验证签名
-	//验证签名
-	params := make(map[string]interface{})
-	jsonData, err := json.Marshal(req)
-	if err != nil {
-		log.Printf("JSON marshal error: %v", err)
-		return err
-	}
-	if err := json.Unmarshal(jsonData, &params); err != nil {
-		log.Printf("JSON unmarshal error: %v", err)
-		return err
-	}
+	var params map[string]interface{}
+	mapstructure.Decode(req, &params)
 
 	// Verify signature
 	flag, err := utils.Verify(params, cli.BackKey)
@@ -28,8 +19,9 @@ func (cli *Client) CryWithdrawCallback(req ELKCryWithdrawBackReq, processor func
 		return err
 	}
 	if !flag {
+		//签名校验失败
 		reqJson, _ := json.Marshal(req)
-		log.Printf("ELKCur back verify fail, req: %s", string(reqJson))
+		log.Printf("ELKCry back verify fail, req: %s", string(reqJson))
 	}
 
 	//开始处理

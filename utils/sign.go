@@ -5,6 +5,8 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"github.com/samber/lo"
+	"github.com/spf13/cast"
 	"sort"
 	"strings"
 )
@@ -16,21 +18,22 @@ func Sign(params map[string]interface{}, key string) (string, error) {
 	}
 
 	// 2. Get and sort keys
-	keys := make([]string, 0, len(params))
-	for k := range params {
-		keys = append(keys, k)
-	}
+	keys := lo.Keys(params)
 	sort.Strings(keys) // ASCII ascending order
 
 	// 3. Build sign string
 	var sb strings.Builder
 	for _, k := range keys {
-		sb.WriteString(fmt.Sprintf("%s=%v&", k, params[k]))
+		value := cast.ToString(params[k])
+		if k != "signature" && value != "" {
+			//只有非空才可以参与签名
+			sb.WriteString(fmt.Sprintf("%s=%s&", k, value))
+		}
 	}
 	sb.WriteString(fmt.Sprintf("key=%s", key))
+	signStr := sb.String()
 
 	// 4. Generate MD5
-	signStr := sb.String()
 	hash := md5.Sum([]byte(signStr))
 	signResult := hex.EncodeToString(hash[:])
 

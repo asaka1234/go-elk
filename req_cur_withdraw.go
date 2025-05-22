@@ -1,60 +1,45 @@
 package go_elk
 
 import (
-	"bytes"
+	"crypto/tls"
 	"encoding/json"
-	"fmt"
 	"github.com/asaka1234/go-elk/utils"
-	"io/ioutil"
-	"net/http"
+	"github.com/mitchellh/mapstructure"
 )
 
-// 下单(充值/提现是同一个接口)
 func (cli *Client) CurWithdraw(req ELKCurWithdrawReq) (*ELKCurWithdrawRsp, error) {
 
 	rawURL := cli.CurWithdrawUrl
 
-	// Convert struct to map for signing
-	params := make(map[string]interface{})
-	jsonData, err := json.Marshal(req)
-	if err != nil {
-		return nil, fmt.Errorf("JSON marshal error: %v", err)
-	}
-	if err := json.Unmarshal(jsonData, &params); err != nil {
-		return nil, fmt.Errorf("JSON unmarshal error: %v", err)
-	}
+	// 2. Convert struct to map for signing
+	var params map[string]interface{}
+	mapstructure.Decode(req, &params)
 
 	// Generate signature
-	signature, err := utils.Sign(params, cli.AccessKey)
-	if err != nil {
-		return nil, fmt.Errorf("signature generation error: %v", err)
-	}
-	req.Signature = signature
+	signStr, _ := utils.Sign(params, cli.AccessKey)
+	params["signature"] = signStr
 
 	// Prepare request
-	jsonReq, err := json.Marshal(req)
-	if err != nil {
-		return nil, fmt.Errorf("JSON marshal error: %v", err)
-	}
+	jsonReq, _ := json.Marshal(req)
 	cli.logger.Infof("ELKCurService#withdraw#json: %s", jsonReq)
 
 	// Send HTTP request
-	resp, err := http.Post(rawURL, "application/json", bytes.NewBuffer(jsonReq))
-	if err != nil {
-		return nil, fmt.Errorf("HTTP request error: %v", err)
-	}
-	defer resp.Body.Close()
 
-	// Read response
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("read response error: %v", err)
-	}
-
-	// Parse response
 	var result ELKCurWithdrawRsp
-	if err := json.Unmarshal(body, &result); err != nil {
-		return nil, fmt.Errorf("parse response error: %v", err)
+
+	_, err := cli.ryClient.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true}).
+		SetCloseConnection(true).
+		R().
+		SetBody(params).
+		SetHeaders(getHeaders()).
+		SetResult(&result).
+		SetError(&result).
+		Post(rawURL)
+
+	//fmt.Printf("result: %s\n", string(resp.Body()))
+
+	if err != nil {
+		return nil, err
 	}
 
 	return &result, nil
