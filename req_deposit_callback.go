@@ -16,7 +16,7 @@ func (cli *Client) CryDepositCallback(req ELKCryDepositBackReq, sign string, pro
 	params["signature"] = sign //保存一下从header传过来的原始签名sign
 
 	// Verify signature
-	flag, err := utils.Verify(params, cli.BackKey)
+	flag, err := utils.Verify(params, cli.Params.BackKey)
 	if err != nil {
 		log.Printf("Signature verification error: %v", err)
 		return err
@@ -38,7 +38,7 @@ func (cli *Client) CurDepositCallback(req ELKCurDepositBackReq, processor func(E
 	mapstructure.Decode(req, &params)
 
 	// Verify signature
-	flag, err := utils.Verify(params, cli.BackKey)
+	flag, err := utils.Verify(params, cli.Params.BackKey)
 	if err != nil {
 		log.Printf("Signature verification error: %v", err)
 		return err

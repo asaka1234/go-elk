@@ -10,16 +10,16 @@ import (
 // 下单
 func (cli *Client) CurDeposit(req ELKCurDepositReq) (*ELKCurDepositRsp, error) {
 
-	rawURL := cli.CurDepositUrl
+	rawURL := cli.Params.CurDepositUrl
 
 	var params map[string]interface{}
 	mapstructure.Decode(req, &params)
-	params["uid"] = cli.MerchantID
+	params["uid"] = cli.Params.MerchantId
 
 	// Log request
 	cli.logger.Infof("ELKCurService#req: %+v", req)
 
-	signStr, _ := utils.Sign(params, cli.AccessKey)
+	signStr, _ := utils.Sign(params, cli.Params.AccessKey)
 	params["signature"] = signStr
 
 	// Convert to JSON

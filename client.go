@@ -6,29 +6,15 @@ import (
 )
 
 type Client struct {
-	MerchantID int    // merchantId
-	AccessKey  string // accessKey
-	BackKey    string //backKey
-
-	CurDepositUrl  string
-	CurWithdrawUrl string
-
-	CryDepositUrl  string
-	CryWithdrawUrl string
+	Params ELKInitParams
 
 	ryClient *resty.Client
 	logger   utils.Logger
 }
 
-func NewClient(logger utils.Logger, merchantID int, accessKey, backKey, curDepositUrl, curWithdrawUrl, cryDepositUrl, cryWithdrawUrl string) *Client {
+func NewClient(logger utils.Logger, params ELKInitParams) *Client {
 	return &Client{
-		MerchantID:     merchantID,
-		AccessKey:      accessKey,
-		BackKey:        backKey,
-		CurDepositUrl:  curDepositUrl,
-		CurWithdrawUrl: curWithdrawUrl,
-		CryDepositUrl:  cryDepositUrl,
-		CryWithdrawUrl: cryWithdrawUrl,
+		Params: params,
 
 		ryClient: resty.New(), //client实例
 		logger:   logger,
@@ -36,7 +22,7 @@ func NewClient(logger utils.Logger, merchantID int, accessKey, backKey, curDepos
 }
 
 func (cli *Client) SetMerchantInfo(merchantId int, accessKey, backKey string) {
-	cli.MerchantID = merchantId
-	cli.AccessKey = accessKey
-	cli.BackKey = backKey
+	cli.Params.MerchantId = merchantId
+	cli.Params.AccessKey = accessKey
+	cli.Params.BackKey = backKey
 }

@@ -14,7 +14,7 @@ func (cli *Client) CryWithdrawCallback(req ELKCryWithdrawBackReq, processor func
 	mapstructure.Decode(req, &params)
 
 	// Verify signature
-	flag, err := utils.Verify(params, cli.BackKey)
+	flag, err := utils.Verify(params, cli.Params.BackKey)
 	if err != nil {
 		log.Printf("Signature verification error: %v", err)
 		return err

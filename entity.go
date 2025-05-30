@@ -1,5 +1,18 @@
 package go_elk
 
+type ELKInitParams struct {
+	MerchantId int    `json:"merchantId" mapstructure:"merchantId" config:"merchantId"` // merchantId
+	AccessKey  string `json:"accessKey" mapstructure:"accessKey" config:"accessKey"`    // accessKey
+	BackKey    string `json:"backKey" mapstructure:"backKey" config:"backKey"`          //backKey
+
+	CurDepositUrl  string `json:"curDepositUrl" mapstructure:"curDepositUrl" config:"curDepositUrl"`
+	CurWithdrawUrl string `json:"curWithdrawUrl" mapstructure:"curWithdrawUrl" config:"curWithdrawUrl"`
+	CryDepositUrl  string `json:"cryDepositUrl" mapstructure:"cryDepositUrl" config:"cryDepositUrl"`
+	CryWithdrawUrl string `json:"CryWithdrawUrl" mapstructure:"CryWithdrawUrl" config:"CryWithdrawUrl"`
+}
+
+//----------------------------------
+
 type ELKCurDepositReq struct {
 	UniqueCode string `json:"uniqueCode" mapstructure:"uniqueCode"`
 	Money      string `json:"money" mapstructure:"money"`

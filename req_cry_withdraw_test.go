@@ -8,7 +8,7 @@ import (
 func TestCryWithdraw(t *testing.T) {
 
 	//构造client
-	cli := NewClient(nil, MERCHANT_ID, ACCESS_KEY, BACK_KEY, CUR_DEPOSIT_URL, CUR_WITHDRAW_URL, CRY_DEPOSIT_URL, CRY_WITHDRAW_URL)
+	cli := NewClient(nil, ELKInitParams{MERCHANT_ID, ACCESS_KEY, BACK_KEY, CUR_DEPOSIT_URL, CUR_WITHDRAW_URL, CRY_DEPOSIT_URL, CRY_WITHDRAW_URL})
 
 	//发请求
 	resp, err := cli.CryWithdraw(GenCryWithdrawRequestDemo())

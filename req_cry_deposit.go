@@ -9,14 +9,14 @@ import (
 // 下单
 func (cli *Client) CryDeposit(req ELKCryDepositReq) (*ELKCryDepositRsp, error) {
 
-	rawURL := cli.CryDepositUrl
+	rawURL := cli.Params.CryDepositUrl
 
 	var params map[string]interface{}
 	mapstructure.Decode(req, &params)
-	params["uid"] = cli.MerchantID //uid要参与签名
+	params["uid"] = cli.Params.MerchantId //uid要参与签名
 
 	// Generate signature
-	signStr, _ := utils.Sign(params, cli.AccessKey)
+	signStr, _ := utils.Sign(params, cli.Params.AccessKey)
 	params["signature"] = signStr
 
 	var result ELKCryDepositRsp

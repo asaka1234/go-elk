@@ -9,15 +9,15 @@ import (
 
 func (cli *Client) CurWithdraw(req ELKCurWithdrawReq) (*ELKCurWithdrawRsp, error) {
 
-	rawURL := cli.CurWithdrawUrl
+	rawURL := cli.Params.CurWithdrawUrl
 
 	// 2. Convert struct to map for signing
 	var params map[string]interface{}
 	mapstructure.Decode(req, &params)
-	params["uid"] = cli.MerchantID //要参与签名计算
+	params["uid"] = cli.Params.MerchantId //要参与签名计算
 
 	// Generate signature
-	signStr, _ := utils.Sign(params, cli.AccessKey)
+	signStr, _ := utils.Sign(params, cli.Params.AccessKey)
 	params["signature"] = signStr
 
 	// Prepare request
