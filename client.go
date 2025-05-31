@@ -21,8 +21,6 @@ func NewClient(logger utils.Logger, params ELKInitParams) *Client {
 	}
 }
 
-func (cli *Client) SetMerchantInfo(merchantId int, accessKey, backKey string) {
-	cli.Params.MerchantId = merchantId
-	cli.Params.AccessKey = accessKey
-	cli.Params.BackKey = backKey
+func (cli *Client) SetMerchantInfo(merchant MerchantInfo) {
+	cli.Params.MerchantInfo = merchant
 }
