@@ -6,7 +6,7 @@ type ELKInitParams struct {
 	CurDepositUrl  string `json:"curDepositUrl" mapstructure:"curDepositUrl" config:"curDepositUrl"  yaml:"curDepositUrl"`
 	CurWithdrawUrl string `json:"curWithdrawUrl" mapstructure:"curWithdrawUrl" config:"curWithdrawUrl"  yaml:"curWithdrawUrl"`
 	CryDepositUrl  string `json:"cryDepositUrl" mapstructure:"cryDepositUrl" config:"cryDepositUrl"  yaml:"cryDepositUrl"`
-	CryWithdrawUrl string `json:"CryWithdrawUrl" mapstructure:"CryWithdrawUrl" config:"CryWithdrawUrl"  yaml:"CryWithdrawUrl"`
+	CryWithdrawUrl string `json:"cryWithdrawUrl" mapstructure:"cryWithdrawUrl" config:"cryWithdrawUrl"  yaml:"cryWithdrawUrl"`
 }
 
 type MerchantInfo struct {
