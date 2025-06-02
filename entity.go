@@ -1,7 +1,7 @@
 package go_elk
 
 type ELKInitParams struct {
-	MerchantInfo
+	MerchantInfo `yaml:",inline"` // 关键点
 
 	CurDepositUrl  string `json:"curDepositUrl" mapstructure:"curDepositUrl" config:"curDepositUrl"  yaml:"curDepositUrl"`
 	CurWithdrawUrl string `json:"curWithdrawUrl" mapstructure:"curWithdrawUrl" config:"curWithdrawUrl"  yaml:"curWithdrawUrl"`
