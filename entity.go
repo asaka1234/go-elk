@@ -3,16 +3,16 @@ package go_elk
 type ELKInitParams struct {
 	MerchantInfo
 
-	CurDepositUrl  string `json:"curDepositUrl" mapstructure:"curDepositUrl" config:"curDepositUrl"`
-	CurWithdrawUrl string `json:"curWithdrawUrl" mapstructure:"curWithdrawUrl" config:"curWithdrawUrl"`
-	CryDepositUrl  string `json:"cryDepositUrl" mapstructure:"cryDepositUrl" config:"cryDepositUrl"`
-	CryWithdrawUrl string `json:"CryWithdrawUrl" mapstructure:"CryWithdrawUrl" config:"CryWithdrawUrl"`
+	CurDepositUrl  string `json:"curDepositUrl" mapstructure:"curDepositUrl" config:"curDepositUrl"  yaml:"curDepositUrl"`
+	CurWithdrawUrl string `json:"curWithdrawUrl" mapstructure:"curWithdrawUrl" config:"curWithdrawUrl"  yaml:"curWithdrawUrl"`
+	CryDepositUrl  string `json:"cryDepositUrl" mapstructure:"cryDepositUrl" config:"cryDepositUrl"  yaml:"cryDepositUrl"`
+	CryWithdrawUrl string `json:"CryWithdrawUrl" mapstructure:"CryWithdrawUrl" config:"CryWithdrawUrl"  yaml:"CryWithdrawUrl"`
 }
 
 type MerchantInfo struct {
-	MerchantId int    `json:"merchantId" mapstructure:"merchantId" config:"merchantId"` // merchantId
-	AccessKey  string `json:"accessKey" mapstructure:"accessKey" config:"accessKey"`    // accessKey
-	BackKey    string `json:"backKey" mapstructure:"backKey" config:"backKey"`          //backKey
+	MerchantId int    `json:"merchantId" mapstructure:"merchantId" config:"merchantId"  yaml:"merchantId"` // merchantId
+	AccessKey  string `json:"accessKey" mapstructure:"accessKey" config:"accessKey"  yaml:"accessKey"`     // accessKey
+	BackKey    string `json:"backKey" mapstructure:"backKey" config:"backKey"  yaml:"backKey"`             //backKey
 }
 
 //----------------------------------
