@@ -6,14 +6,14 @@ import (
 )
 
 type Client struct {
-	Params ELKInitParams
+	Params *ELKInitParams
 
 	ryClient  *resty.Client
 	debugMode bool //是否调试模式
 	logger    utils.Logger
 }
 
-func NewClient(logger utils.Logger, params ELKInitParams) *Client {
+func NewClient(logger utils.Logger, params *ELKInitParams) *Client {
 	return &Client{
 		Params: params,
 
