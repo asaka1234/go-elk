@@ -8,17 +8,23 @@ import (
 type Client struct {
 	Params ELKInitParams
 
-	ryClient *resty.Client
-	logger   utils.Logger
+	ryClient  *resty.Client
+	debugMode bool //是否调试模式
+	logger    utils.Logger
 }
 
 func NewClient(logger utils.Logger, params ELKInitParams) *Client {
 	return &Client{
 		Params: params,
 
-		ryClient: resty.New(), //client实例
-		logger:   logger,
+		ryClient:  resty.New(), //client实例
+		debugMode: false,
+		logger:    logger,
 	}
+}
+
+func (cli *Client) SetDebugModel(debugModel bool) {
+	cli.debugMode = debugModel
 }
 
 func (cli *Client) SetMerchantInfo(merchant MerchantInfo) {

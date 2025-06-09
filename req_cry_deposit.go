@@ -26,6 +26,7 @@ func (cli *Client) CryDeposit(req ELKCryDepositReq) (*ELKCryDepositRsp, error) {
 		R().
 		SetBody(params).
 		SetHeaders(getHeaders()).
+		SetDebug(cli.debugMode).
 		SetResult(&result).
 		SetError(&result).
 		Post(rawURL)
