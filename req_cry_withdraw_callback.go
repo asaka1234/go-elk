@@ -22,7 +22,7 @@ func (cli *Client) CryWithdrawCallback(req ELKCryWithdrawBackReq, processor func
 	if !flag {
 		//签名校验失败
 		reqJson, _ := json.Marshal(req)
-		log.Printf("ELKCry back verify fail, req: %s", string(reqJson))
+		cli.logger.Errorf("ELKCry back verify fail, req: %s", string(reqJson))
 		return errors.New("sign verify error")
 	}
 

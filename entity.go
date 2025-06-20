@@ -15,66 +15,76 @@ type MerchantInfo struct {
 	BackKey    string `json:"backKey" mapstructure:"backKey" config:"backKey"  yaml:"backKey"`             //backKey
 }
 
-//----------------------------------
+//============================================================
 
 type ELKCurDepositReq struct {
-	UniqueCode string `json:"uniqueCode" mapstructure:"uniqueCode"`
+	UniqueCode string `json:"uniqueCode" mapstructure:"uniqueCode"` //商户uid
 	Money      string `json:"money" mapstructure:"money"`
-	PayType    int    `json:"payType" mapstructure:"payType"` // 1: UniPay 2: Alipay 3: WeChat
-	OrderId    string `json:"orderId" mapstructure:"orderId"`
-	PayerName  string `json:"payerName" mapstructure:"payerName"`
-	JumpUrl    string `json:"jumpUrl" mapstructure:"jumpUrl"`
+	PayType    int    `json:"payType" mapstructure:"payType"`     // 1: UniPay(银联) 2: Alipay 3: WeChat
+	OrderId    string `json:"orderId" mapstructure:"orderId"`     //商户orderNo
+	PayerName  string `json:"payerName" mapstructure:"payerName"` //付款人名字(option)
 	//这个不需要业务侧使用,而是sdk帮计算和补充
 	//Signature  string `json:"signature" mapstructure:"signature"` //参数里
-	//UID        int    `json:"uid" mapstructure:"uid"`
+	//UID        int    `json:"uid" mapstructure:"uid"` //商户id
 }
 
 type ELKCurDepositRsp struct {
-	Code    int    `json:"code"`
+	Code    int    `json:"code"` //1:成功，其他值：失败
 	Message string `json:"message"`
-	Data    string `json:"data"`
-	Success bool   `json:"success"`
+	Data    string `json:"data"`    //接口返回结果。值为URL地址，拿到这个URL可以跳转到下单页面
+	Success bool   `json:"success"` //true:成功，false:失败
 }
-
-type ELKCurWithdrawReq struct {
-	Money     string `json:"money" mapstructure:"money"`
-	OrderId   string `json:"orderId" mapstructure:"orderId"`
-	PayerName string `json:"payerName" mapstructure:"payerName"`
-	CardNo    string `json:"cardNo" mapstructure:"cardNo"`
-	BankName  string `json:"bankName" mapstructure:"bankName"`
-	//这个不需要业务侧使用,而是sdk帮计算和补充
-	//Signature string `json:"signature" mapstructure:"signature"` //参数里
-	//UID       int    `json:"uid" mapstructure:"uid"`
-}
-
-type ELKCurWithdrawRsp struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
-	Data    string `json:"data"`
-	Success bool   `json:"success"`
-}
-
-// --------------------------------------------------
 
 type ELKCurDepositBackReq struct {
 	ApiOrderNo  string `json:"apiOrderNo" mapstructure:"apiOrderNo"`
 	Amount      string `json:"amount" mapstructure:"amount"`
 	Money       string `json:"money" mapstructure:"money"`
-	UniqueCode  string `json:"uniqueCode" mapstructure:"uniqueCode"`
+	UniqueCode  string `json:"uniqueCode" mapstructure:"uniqueCode"` //商户唯一id
 	Signature   string `json:"signature" mapstructure:"signature"`
-	TradeStatus string `json:"tradeStatus" mapstructure:"tradeStatus"`
-	TradeId     string `json:"tradeId" mapstructure:"tradeId"`
+	TradeStatus string `json:"tradeStatus" mapstructure:"tradeStatus"` //交易状态。1：成功，其它为失败
+	TradeId     string `json:"tradeId" mapstructure:"tradeId"`         //psp订单号
 }
 
 type ELKCurDepositBackRsp struct {
-	Code    int    `json:"code"`
+	Code    int    `json:"code"`    //接口调用状态，1:成功，其他值：失败
+	Message string `json:"message"` //结果说明，如果接口调用出错，那么返回错误描述，成功返回“成功”
+	Data    string `json:"data"`
+	Success bool   `json:"success"` //true:成功，false:失败
+}
+
+//============================================================
+
+type ELKCurWithdrawReq struct {
+	Money     string `json:"money" mapstructure:"money"`
+	OrderId   string `json:"orderId" mapstructure:"orderId"` //商户订单号
+	PayerName string `json:"payerName" mapstructure:"payerName"`
+	CardNo    string `json:"cardNo" mapstructure:"cardNo"`
+	BankName  string `json:"bankName" mapstructure:"bankName"`
+	//这个不需要业务侧使用,而是sdk帮计算和补充
+	//Signature string `json:"signature" mapstructure:"signature"` //参数里
+	//UID       int    `json:"uid" mapstructure:"uid"` //商户id
+}
+
+type ELKCurWithdrawRsp struct {
+	Code    int    `json:"code"` //1:成功，其他值：失败
 	Message string `json:"message"`
 	Data    string `json:"data"`
-	Success bool   `json:"success"`
+	Success bool   `json:"success"` //true:成功，false:失败
 }
 
 //================================================
 
+/*
+	{
+		" signature ": "27a75e39ac8263612c6da1807edd1999",
+		"amount": "5",
+		"coinName": "USDT",
+		"orderId": "fff22222200000121",
+		"protocol": "ERC20",
+		"uid": "5553088",
+		"uniqueCode": "193903"
+	}
+*/
 type ELKCryDepositReq struct {
 	UniqueCode string `json:"uniqueCode" mapstructure:"uniqueCode"` //A merchant's representative unique identifier, such as a user ID or business ID.
 	Protocol   string `json:"protocol" mapstructure:"protocol"`     //代币协议 TRC20
@@ -86,26 +96,62 @@ type ELKCryDepositReq struct {
 	//Signature string `json:"signature" mapstructure:"signature"` //签名字段
 }
 
-/*
-{
-	" signature ": "27a75e39ac8263612c6da1807edd1999",
-	"amount": "5",
-	"coinName": "USDT",
-	"orderId": "fff22222200000121",
-	"protocol": "ERC20",
-	"uid": "5553088",
-	"uniqueCode": "193903"
+type ELKCryDepositRsp struct {
+	Code    int    `json:"code"` //1是成功
+	Message string `json:"message"`
+	Data    string `json:"data"`    //Interface returns the result. The value is a URL address, and accessing this URL will redirect you to the order placement page.
+	Success bool   `json:"success"` //true: Successful, false: Failed
 }
 
+/*
+	{
+		"apiOrderNo": "fff2222220000900",
+		"amount": "0.9000",
+		"protocol": "ERC20",
+		"orderAmount": "2.3309",
+		"uniqueCode": "3659931",
+		"fee": "0.2000",
+		"txId": "0x00355ba3f4a839668159abee67974a0dfb8c129fef370c105c5359ce9a25611d",
+		"coinName": "USDT",
+		"tradeId": 606287024574013440
+	}
 */
+// POST
+// 签名放在head:signature 中
+type ELKCryDepositBackReq struct {
+	ApiOrderNo  string `json:"apiOrderNo" mapstructure:"apiOrderNo"` //Merchant Order Number: Refers to the orderId
+	TradeId     string `json:"tradeId" mapstructure:"tradeId"`       //Platform Record ID
+	TxId        string `json:"txId" mapstructure:"txId"`
+	UniqueCode  string `json:"uniqueCode" mapstructure:"uniqueCode"` //Merchant's representative unique identifier, for example, User ID or Business ID.
+	Protocol    string `json:"protocol" mapstructure:"protocol"`     //Protocol ERC20 or TRC20
+	CoinName    string `json:"coinName" mapstructure:"coinName"`     //Curency type, for exmaple：USDT
+	Amount      string `json:"amount" mapstructure:"amount"`
+	OrderAmount string `json:"orderAmount" mapstructure:"orderAmount"`
+	Fee         string `json:"fee" mapstructure:"fee"`
+}
 
-type ELKCryDepositRsp struct {
-	Code    int    `json:"code"`
+type ELKCryDepositBackRsp struct {
+	Code    int    `json:"code"` //1: success, other values: failure
 	Message string `json:"message"`
-	Data    string `json:"data"` //Interface returns the result. The value is a URL address, and accessing this URL will redirect you to the order placement page.
+	Data    string `json:"data"`
 	Success bool   `json:"success"`
 }
 
+//================================================================
+
+/*
+{
+
+	"amount": "10",
+	"coinName": "USDT",
+	"orderId": "fff2222220000012",
+	"coinChain": "ERC20",
+	"uid": "3659931",
+	"toAddress": "fx002",
+	"signature": "VMAXj2jPLMbINU412Y5ORTy6OKEgWFq0"
+
+}
+*/
 type ELKCryWithdrawReq struct {
 	ChainName string `json:"chainName" mapstructure:"chainName"` //TRC20
 	CoinName  string `json:"coinName" mapstructure:"coinName"`   //USDT
@@ -118,66 +164,19 @@ type ELKCryWithdrawReq struct {
 }
 
 /*
-{
-
-	"amount": "10",
-	"coinName": "USDT",
-	"orderId": "fff2222220000012",
-	"coinChain": "ERC20",
-	"uid": "3659931",
-	"toAddress": "fx002",
-
-"signature": "VMAXj2jPLMbINU412Y5ORTy6OKEgWFq0"
-
-}
+	{
+		"success": true,
+		"code": 1,
+		"message": "成功",
+		"data": "646127987555045376"
+	}
 */
-
 type ELKCryWithdrawRsp struct {
-	Code    int    `json:"code"`
+	Code    int    `json:"code"` //1: success, other values : failure.
 	Message string `json:"message"`
-	Data    string `json:"data"`
-	Success bool   `json:"success"`
+	Data    string `json:"data"`    //提现订单号 Return crypto payout order ID
+	Success bool   `json:"success"` //true: success，false: failed
 }
-
-//--------------------------------------------------
-
-// POST
-// 签名放在head:signature 中
-type ELKCryDepositBackReq struct {
-	ApiOrderNo  string `json:"apiOrderNo" mapstructure:"apiOrderNo"` //Merchant Order Number: Refers to the orderId
-	TradeId     string `json:"tradeId" mapstructure:"tradeId"`       //Platform Record ID
-	TxId        string `json:"txId" mapstructure:"txId"`
-	UniqueCode  string `json:"uniqueCode" mapstructure:"uniqueCode"` //Merchant's representative unique identifier, for example, User ID or Business ID.
-	Protocol    string `json:"protocol" mapstructure:"protocol"`
-	CoinName    string `json:"coinName" mapstructure:"coinName"` //Curency type, for exmaple：USDT
-	Amount      string `json:"amount" mapstructure:"amount"`
-	OrderAmount string `json:"orderAmount" mapstructure:"orderAmount"`
-	Fee         string `json:"fee" mapstructure:"fee"`
-}
-
-/*
-{
-	"apiOrderNo": "fff2222220000900",
-	"amount": "0.9000",
-	"protocol": "ERC20",
-	"orderAmount": "2.3309",
-	"uniqueCode": "3659931",
-	"fee": "0.2000",
-	"txId": "0x00355ba3f4a839668159abee67974a0dfb8c129fef370c105c5359ce9a25611d",
-	"coinName": "USDT",
-	"tradeId": 606287024574013440
-}
-
-*/
-
-type ELKCryDepositBackRsp struct {
-	Code    int    `json:"code"` //1: success, other values: failure
-	Message string `json:"message"`
-	Data    string `json:"data"`
-	Success bool   `json:"success"`
-}
-
-//--------------------------------------------------
 
 type ELKCryWithdrawBackReq struct {
 	Amount      string `json:"amount" mapstructure:"amount"`
@@ -190,20 +189,6 @@ type ELKCryWithdrawBackReq struct {
 	ToAddress   string `json:"toAddress" mapstructure:"toAddress"`
 	Signature   string `json:"signature" mapstructure:"signature"` //是psp传回来的
 }
-
-/*
-{
-	 "amount": "10",
-	"fee": "1.0",
-	 "coinName": "USDT",
-	 "orderId": "fff2222220000012",
-	 "withdrawId": "xxxxxxxxxxxxxxxxxxxx",
-	 "tradeStatus": 1,
-	 "toAddress": " xxxxxxxxxxxxxxxxxxxxxx",
-	"txid": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-}
-
-*/
 
 type ELKCryWithdrawBackRsp struct {
 	Code    int    `json:"code"`

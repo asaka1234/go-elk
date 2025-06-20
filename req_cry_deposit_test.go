@@ -1,7 +1,6 @@
 package go_elk
 
 import (
-	"fmt"
 	"github.com/google/uuid"
 	"testing"
 )
@@ -14,7 +13,7 @@ func TestCryDeposit(t *testing.T) {
 	//发请求
 	resp, err := cli.CryDeposit(GenCryDepositRequestDemo())
 	if err != nil {
-		fmt.Printf("err:%s\n", err.Error())
+		cli.logger.Errorf("err:%s\n", err.Error())
 		return
 	}
 	cli.logger.Infof("resp:%+v\n", resp)

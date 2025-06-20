@@ -2,7 +2,6 @@ package go_elk
 
 import (
 	"crypto/tls"
-	"encoding/json"
 	"github.com/asaka1234/go-elk/utils"
 	"github.com/mitchellh/mapstructure"
 )
@@ -14,17 +13,13 @@ func (cli *Client) CurDeposit(req ELKCurDepositReq) (*ELKCurDepositRsp, error) {
 
 	var params map[string]interface{}
 	mapstructure.Decode(req, &params)
+
+	//补充字段
 	params["uid"] = cli.Params.MerchantId
 
-	// Log request
-	cli.logger.Infof("ELKCurService#req: %+v", req)
-
+	//计算签名
 	signStr, _ := utils.Sign(params, cli.Params.AccessKey)
 	params["signature"] = signStr
-
-	// Convert to JSON
-	jsonStr, _ := json.Marshal(params)
-	cli.logger.Infof("ELKCurService#deposit#json: %s", jsonStr)
 
 	var result ELKCurDepositRsp
 

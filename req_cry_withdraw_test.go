@@ -1,7 +1,6 @@
 package go_elk
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -13,7 +12,7 @@ func TestCryWithdraw(t *testing.T) {
 	//发请求
 	resp, err := cli.CryWithdraw(GenCryWithdrawRequestDemo())
 	if err != nil {
-		fmt.Printf("err:%s\n", err.Error())
+		cli.logger.Errorf("err:%s\n", err.Error())
 		return
 	}
 	cli.logger.Infof("resp:%+v\n", resp)

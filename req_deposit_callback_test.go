@@ -32,19 +32,17 @@ func TestCallback(t *testing.T) {
 	var backReq ELKCurDepositBackReq
 	err := json.Unmarshal([]byte(req), &backReq)
 	if err != nil {
-		fmt.Println("Error:", err)
+		cli.logger.Errorf("Error:%s", err.Error())
 		return
 	}
 
 	//2. 处理请求
-
-	//发请求
 	err = cli.CurDepositCallback(backReq, func(ELKCurDepositBackReq) error { return nil })
 	if err != nil {
-		fmt.Printf("err:%s\n", err.Error())
+		cli.logger.Errorf("Error:%s", err.Error())
 		return
 	}
-	fmt.Printf("resp:%+v\n", backReq)
+	cli.logger.Infof("resp:%+v\n", backReq)
 }
 
 func GenCallbackRequestDemo() string {

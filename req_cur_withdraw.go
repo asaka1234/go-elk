@@ -2,7 +2,6 @@ package go_elk
 
 import (
 	"crypto/tls"
-	"encoding/json"
 	"github.com/asaka1234/go-elk/utils"
 	"github.com/mitchellh/mapstructure"
 )
@@ -14,17 +13,13 @@ func (cli *Client) CurWithdraw(req ELKCurWithdrawReq) (*ELKCurWithdrawRsp, error
 	// 2. Convert struct to map for signing
 	var params map[string]interface{}
 	mapstructure.Decode(req, &params)
-	params["uid"] = cli.Params.MerchantId //要参与签名计算
 
-	// Generate signature
+	//补充字段
+	params["uid"] = cli.Params.MerchantId
+
+	//计算签名
 	signStr, _ := utils.Sign(params, cli.Params.AccessKey)
 	params["signature"] = signStr
-
-	// Prepare request
-	jsonReq, _ := json.Marshal(req)
-	cli.logger.Infof("ELKCurService#withdraw#json: %s", jsonReq)
-
-	// Send HTTP request
 
 	var result ELKCurWithdrawRsp
 

@@ -24,7 +24,7 @@ func (cli *Client) CryDepositCallback(req ELKCryDepositBackReq, sign string, pro
 	if !flag {
 		//签名校验失败
 		reqJson, _ := json.Marshal(req)
-		log.Printf("ELKCrypto back verify fail, req: %s", string(reqJson))
+		cli.logger.Errorf("ELKCrypto back verify fail, req: %s", string(reqJson))
 		return errors.New("sign verify error")
 	}
 
@@ -46,7 +46,7 @@ func (cli *Client) CurDepositCallback(req ELKCurDepositBackReq, processor func(E
 	if !flag {
 		//签名校验失败
 		reqJson, _ := json.Marshal(req)
-		log.Printf("ELKCur back verify fail, req: %s", string(reqJson))
+		cli.logger.Errorf("ELKCur back verify fail, req: %s", string(reqJson))
 		return errors.New("sign verify error")
 	}
 
