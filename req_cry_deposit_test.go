@@ -7,9 +7,9 @@ import (
 )
 
 func TestCryDeposit(t *testing.T) {
-
+	vLog := VLog{}
 	//构造client
-	cli := NewClient(nil, &ELKInitParams{MerchantInfo{MERCHANT_ID, ACCESS_KEY, BACK_KEY}, CUR_DEPOSIT_URL, CUR_WITHDRAW_URL, CRY_DEPOSIT_URL, CRY_WITHDRAW_URL})
+	cli := NewClient(vLog, &ELKInitParams{MerchantInfo{MERCHANT_ID, ACCESS_KEY, BACK_KEY}, CUR_DEPOSIT_URL, CUR_WITHDRAW_URL, CRY_DEPOSIT_URL, CRY_WITHDRAW_URL})
 
 	//发请求
 	resp, err := cli.CryDeposit(GenCryDepositRequestDemo())
@@ -17,7 +17,7 @@ func TestCryDeposit(t *testing.T) {
 		fmt.Printf("err:%s\n", err.Error())
 		return
 	}
-	fmt.Printf("resp:%+v\n", resp)
+	cli.logger.Infof("resp:%+v\n", resp)
 }
 
 func GenCryDepositRequestDemo() ELKCryDepositReq {

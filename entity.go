@@ -57,13 +57,13 @@ type ELKCurWithdrawRsp struct {
 // --------------------------------------------------
 
 type ELKCurDepositBackReq struct {
-	ApiOrderNo        string `json:"apiOrderNo" mapstructure:"apiOrderNo"`
-	Money             string `json:"money" mapstructure:"money"`
-	TradeStatus       string `json:"tradeStatus" mapstructure:"tradeStatus"`
-	TradeId           string `json:"tradeId" mapstructure:"tradeId"`
-	WithdrawalOrderNo string `json:"withdrawalOrderNo" mapstructure:"withdrawalOrderNo"`
-	UniqueCode        string `json:"uniqueCode" mapstructure:"uniqueCode"`
-	Signature         string `json:"signature" mapstructure:"signature"` //参数里(是psp传过来的)
+	ApiOrderNo  string `json:"apiOrderNo" mapstructure:"apiOrderNo"`
+	Amount      string `json:"amount" mapstructure:"amount"`
+	Money       string `json:"money" mapstructure:"money"`
+	UniqueCode  string `json:"uniqueCode" mapstructure:"uniqueCode"`
+	Signature   string `json:"signature" mapstructure:"signature"`
+	TradeStatus string `json:"tradeStatus" mapstructure:"tradeStatus"`
+	TradeId     string `json:"tradeId" mapstructure:"tradeId"`
 }
 
 type ELKCurDepositBackRsp struct {
