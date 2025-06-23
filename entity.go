@@ -35,7 +35,8 @@ type ELKCurDepositRsp struct {
 	Success bool   `json:"success"` //true:成功，false:失败
 }
 
-type ELKCurDepositBackReq struct {
+// 充值/提现都用这个,区别是有没有uniqueCode
+type ELKCurrencyBackReq struct {
 	ApiOrderNo  string `json:"apiOrderNo" mapstructure:"apiOrderNo"`
 	Amount      string `json:"amount" mapstructure:"amount"`
 	Money       string `json:"money" mapstructure:"money"`
@@ -45,7 +46,7 @@ type ELKCurDepositBackReq struct {
 	TradeId     string `json:"tradeId" mapstructure:"tradeId"`         //psp订单号
 }
 
-type ELKCurDepositBackRsp struct {
+type ELKCurrencyBackRsp struct {
 	Code    int    `json:"code"`    //接口调用状态，1:成功，其他值：失败
 	Message string `json:"message"` //结果说明，如果接口调用出错，那么返回错误描述，成功返回“成功”
 	Data    string `json:"data"`

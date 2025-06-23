@@ -29,7 +29,7 @@ func TestCallback(t *testing.T) {
 
 	//1. 获取请求
 	req := GenCallbackRequestDemo() //提现的返回
-	var backReq ELKCurDepositBackReq
+	var backReq ELKCurrencyBackReq
 	err := json.Unmarshal([]byte(req), &backReq)
 	if err != nil {
 		cli.logger.Errorf("Error:%s", err.Error())
@@ -37,7 +37,7 @@ func TestCallback(t *testing.T) {
 	}
 
 	//2. 处理请求
-	err = cli.CurDepositCallback(backReq, func(ELKCurDepositBackReq) error { return nil })
+	err = cli.CurrencyCallback(backReq, func(ELKCurrencyBackReq) error { return nil })
 	if err != nil {
 		cli.logger.Errorf("Error:%s", err.Error())
 		return

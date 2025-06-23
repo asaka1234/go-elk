@@ -32,7 +32,8 @@ func (cli *Client) CryDepositCallback(req ELKCryDepositBackReq, sign string, pro
 	return processor(req)
 }
 
-func (cli *Client) CurDepositCallback(req ELKCurDepositBackReq, processor func(ELKCurDepositBackReq) error) error {
+// 充值/提现都会调用这个
+func (cli *Client) CurrencyCallback(req ELKCurrencyBackReq, processor func(ELKCurrencyBackReq) error) error {
 	//验证签名
 	var params map[string]interface{}
 	mapstructure.Decode(req, &params)
