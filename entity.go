@@ -120,7 +120,7 @@ type ELKCryDepositRsp struct {
 // 签名放在head:signature 中
 type ELKCryDepositBackReq struct {
 	ApiOrderNo  string `json:"apiOrderNo" mapstructure:"apiOrderNo"` //Merchant Order Number: Refers to the orderId
-	TradeId     string `json:"tradeId" mapstructure:"tradeId"`       //Platform Record ID
+	TradeId     int64  `json:"tradeId" mapstructure:"tradeId"`       //Platform Record ID
 	TxId        string `json:"txId" mapstructure:"txId"`
 	UniqueCode  string `json:"uniqueCode" mapstructure:"uniqueCode"` //Merchant's representative unique identifier, for example, User ID or Business ID.
 	Protocol    string `json:"protocol" mapstructure:"protocol"`     //Protocol ERC20 or TRC20
