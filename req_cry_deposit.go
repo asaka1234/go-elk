@@ -36,7 +36,7 @@ func (cli *Client) CryDeposit(req ELKCryDepositReq) (*ELKCryDepositRsp, error) {
 		Post(rawURL)
 
 	restLog, _ := jsoniter.ConfigCompatibleWithStandardLibrary.Marshal(utils.GetRestyLog(resp2))
-	cli.logger.Infof("PSPResty#elk#crydeposit->%+v", string(restLog))
+	cli.logger.Infof("PSPResty#elk#crydeposit->%s", string(restLog))
 
 	if err != nil {
 		return nil, err

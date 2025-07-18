@@ -36,7 +36,7 @@ func (cli *Client) CurDeposit(req ELKCurDepositReq) (*ELKCurDepositRsp, error) {
 		Post(rawURL)
 
 	restLog, _ := jsoniter.ConfigCompatibleWithStandardLibrary.Marshal(utils.GetRestyLog(resp2))
-	cli.logger.Infof("PSPResty#elk#curdeposit->%+v", string(restLog))
+	cli.logger.Infof("PSPResty#elk#curdeposit->%s", string(restLog))
 
 	if err != nil {
 		return nil, err

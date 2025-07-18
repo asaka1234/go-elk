@@ -36,7 +36,7 @@ func (cli *Client) CryWithdraw(req ELKCryWithdrawReq) (*ELKCryWithdrawRsp, error
 		Post(rawURL)
 
 	restLog, _ := jsoniter.ConfigCompatibleWithStandardLibrary.Marshal(utils.GetRestyLog(resp2))
-	cli.logger.Infof("PSPResty#elk#crywithdraw->%+v", string(restLog))
+	cli.logger.Infof("PSPResty#elk#crywithdraw->%s", string(restLog))
 
 	if err != nil {
 		return nil, err
