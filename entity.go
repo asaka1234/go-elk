@@ -37,13 +37,14 @@ type ELKCurDepositRsp struct {
 
 // 充值/提现都用这个,区别是有没有uniqueCode
 type ELKCurrencyBackReq struct {
-	ApiOrderNo  string `json:"apiOrderNo" mapstructure:"apiOrderNo"  binding:"required"`
-	Amount      string `json:"amount" mapstructure:"amount"`
-	Money       string `json:"money" mapstructure:"money"`
-	UniqueCode  string `json:"uniqueCode" mapstructure:"uniqueCode"` //商户唯一id
-	Signature   string `json:"signature" mapstructure:"signature"`
-	TradeStatus string `json:"tradeStatus" mapstructure:"tradeStatus"` //交易状态。1：成功，其它为失败
-	TradeId     string `json:"tradeId" mapstructure:"tradeId"`         //psp订单号
+	ApiOrderNo        string `json:"apiOrderNo" mapstructure:"apiOrderNo"  binding:"required"`
+	Amount            string `json:"amount" mapstructure:"amount"`
+	Money             string `json:"money" mapstructure:"money"`
+	WithdrawalOrderNo int    `json:"withdrawalOrderNo" mapstructure:"withdrawalOrderNo"`
+	UniqueCode        string `json:"uniqueCode" mapstructure:"uniqueCode"` //商户唯一id
+	Signature         string `json:"signature" mapstructure:"signature"`
+	TradeStatus       string `json:"tradeStatus" mapstructure:"tradeStatus"` //交易状态。1：成功，其它为失败
+	TradeId           string `json:"tradeId" mapstructure:"tradeId"`         //psp订单号
 }
 
 type ELKCurrencyBackRsp struct {
