@@ -25,7 +25,7 @@ func Sign(params map[string]interface{}, key string) (string, error) {
 	var sb strings.Builder
 	for _, k := range keys {
 		value := cast.ToString(params[k])
-		if k != "signature" && value != "" {
+		if k != "signature" && value != "" && value != "0" {
 			//只有非空才可以参与签名
 			sb.WriteString(fmt.Sprintf("%s=%s&", k, value))
 		}
@@ -38,7 +38,7 @@ func Sign(params map[string]interface{}, key string) (string, error) {
 	signResult := hex.EncodeToString(hash[:])
 
 	// Debug print (optional)
-	//fmt.Printf("验签str: %s\n结果: %s\n", signStr, signResult)
+	fmt.Printf("验签str: %s\n结果: %s\n", signStr, signResult)
 
 	return signResult, nil
 }
